@@ -1,7 +1,7 @@
 import logger from "./logger";
 import dotenv from "dotenv";
 
-export const ENVIRONMENT = process.env.NODE_ENV || 'development';
+export const ENVIRONMENT = process.env.NODE_ENV || 'example';
 const path = `.env.${ENVIRONMENT}`;
 const envResult = dotenv.config({path});
 

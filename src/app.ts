@@ -10,6 +10,7 @@ import {container} from "tsyringe";
 import {UserService, DBService} from "./services";
 import {BotFlow} from "./bot-utils";
 import * as adminApi from "./controllers/admin-api";
+import * as adminController from "./controllers/admin";
 
 container.register<UserService>(UserService, {useClass: UserService});
 container.register<DBService>(DBService, {useClass: DBService});
@@ -63,5 +64,7 @@ app.use(lusca.xssProtection(true));
 app.use(
     express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
 );
+app.use(adminApi.router);
+app.use(adminController.router);
 
 export default app;

@@ -9,6 +9,7 @@ import { MONGODB_URI } from "./util/secrets";
 import {container} from "tsyringe";
 import {UserService, DBService} from "./services";
 import {BotFlow} from "./bot-utils";
+import * as adminApi from "./controllers/admin-api";
 
 container.register<UserService>(UserService, {useClass: UserService});
 container.register<DBService>(DBService, {useClass: DBService});

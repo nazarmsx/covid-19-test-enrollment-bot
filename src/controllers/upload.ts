@@ -28,25 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 import {NotAuthorized,checkIsUser,checkAuth} from "../middlewares";
-/**
- * @api {зщые} /api/v1/upload Upload images
- * @apiName Upload images
- * @apiGroup Utils
- *
- * @apiHeader {String} authorization Access token: Bearer sdssdsd....
- * @apiHeader {String} Content-Type multipart/form-data
- *
- * @apiParam {File} photos Images
- *
- * @apiSuccessExample Success-Response:
- * HTTP/1.1 200 OK
- {
-   "status": "OK",
-   "data": [
-     "http://localhost/uploads/c59587415ba4013d34ac38ac030573da.jpg"
-   ]
- }
-*/
+
 
 uploadRouter.post('/api/v1/upload',checkAuth, upload.array('photos', 20),async function (req: Request, res: Response, next: NextFunction) {
   if(!req.files || req.files.length===0){

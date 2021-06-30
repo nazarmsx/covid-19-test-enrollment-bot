@@ -1,2 +1,2 @@
-export * from "./delivery"
 export * from "./upload"
+export * from "./admin"

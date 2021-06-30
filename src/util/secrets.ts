@@ -19,6 +19,7 @@ export const VIBER_BOT_API_KEY = process.env["VIBER_BOT_API_KEY"];
 export const EXTERNAL_API = process.env["EXTERNAL_API"];
 export const VIBER_WEBHOOK = process.env["VIBER_WEBHOOK"];
 export const VIBER_HTTP_PORT = process.env["VIBER_HTTP_PORT"];
+export const FILE_BASE_PATH = process.env["FILE_BASE_PATH"];
 
 if (!MONGODB_URI) {
     if (prod) {

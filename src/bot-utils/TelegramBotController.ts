@@ -1,13 +1,12 @@
 import "reflect-metadata";
 import Telebot from 'telebot';
-import {container} from "tsyringe";
-import {UserService} from "../services";
-import {BotController} from './BotController';
-import {FlowStep} from './BotFlow';
-import {MessageRegistry} from './MessageRegistry';
+import { container } from "tsyringe";
+import { UserService } from "../services";
+import { BotController } from './BotController';
+import { FlowStep } from './BotFlow';
+import { MessageRegistry } from './MessageRegistry';
 import { TELEGRAM_BOT_API_KEY, REGION } from '../util/secrets'
 import moment from "moment";
-
 const userService = container.resolve(UserService);
 const botController = container.resolve(BotController);
 const messageRegistry = container.resolve(MessageRegistry);
@@ -47,7 +46,7 @@ const bot = new Telebot({
         timeout: 0,
         limit: 100,
         retryTimeout: 5000,
-    },pluginConfig: {
+    }, pluginConfig: {
         namedButtons: {
             buttons: BUTTONS
         }
@@ -61,15 +60,27 @@ bot.on(['/start'], async (msg) => {
         let replyMarkup = bot.keyboard([
             [BUTTONS[`restart_${language}`].label],
         ], {resize: true});
-        const regionName  = messageRegistry.getTranslations(language)[REGION === 'kyiv'? 'boryspil' : REGION];
-        const greetingText = messageRegistry.getGreetingMessage(language,regionName);
+        const regionName = messageRegistry.getTranslations(language)[REGION === 'kyiv' ? 'boryspil' : REGION];
+        const greetingText = messageRegistry.getGreetingMessage(language, regionName);
         await bot.sendMessage(chatId, greetingText, {replyMarkup});
         const user = await userService.findUserByChatId(chatId);
-        if(user){
+        if (user) {
             await userService.updateUser(chatId, {
-                chatId, region: REGION, messenger: 'telegram', lang: language, stepId: null,
-                name: null, gender: null,birthDate: null,email: null,
-                phoneNumber: null, testDate: null, testPurpose: null, phoneNumberIsRegisteredInDiia: null,testType: null, lastMessageId: null,
+                chatId,
+                region: REGION,
+                messenger: 'telegram',
+                lang: language,
+                stepId: null,
+                name: null,
+                gender: null,
+                birthDate: null,
+                email: null,
+                phoneNumber: null,
+                testDate: null,
+                testPurpose: null,
+                phoneNumberIsRegisteredInDiia: null,
+                testType: null,
+                lastMessageId: null,
             });
         }
         await botController.start(chatId, 'telegram');
@@ -82,7 +93,7 @@ bot.on(['/start'], async (msg) => {
 
 bot.on('text', async (msg) => {
     const chatId = msg.chat.id;
-    if (!msg.text.startsWith('/') && !messageRegistry.isCommandName(msg.text) ) {
+    if (!msg.text.startsWith('/') && !messageRegistry.isCommandName(msg.text)) {
         const currentStep = await botController.getNextStep(chatId);
         if (currentStep.key === 'getPhoneNumber') {
             return await handlePhoneNumberSet(msg, msg.text);
@@ -143,12 +154,12 @@ async function askNextQuestion(chatId: string) {
 
 function buildInlineKeyBoard(step: FlowStep, lang: string) {
     if (step.key === 'getPhoneNumber') {
-        return  buildAskContactKeyboard(step, lang);
+        return buildAskContactKeyboard(step, lang);
     }
     const buttons = step.buttons.map((btn) => {
         const text = messageRegistry.getTranslations(lang)[btn.key] ? messageRegistry.getTranslations(lang)[btn.key] : btn.key;
-        if(btn.url){
-            return bot.inlineButton(text, {url: btn.url })
+        if (btn.url) {
+            return bot.inlineButton(text, {url: btn.url})
         }
         return bot.inlineButton(text, {callback: `${step.key}=${btn.value}`})
     });
@@ -177,7 +188,7 @@ async function handleLanguageChange(msg: any, lang: string) {
 
 async function handlePhoneNumberSet(msg: any, phone_number: string) {
     const chatId = msg.chat.id;
-    const user =  await userService.findUserByChatId(chatId);
+    const user = await userService.findUserByChatId(chatId);
     await botController.saveStep(chatId, phone_number);
     let replyMarkup = bot.keyboard([
         [BUTTONS[`restart_${user.lang}`].label],

@@ -1,6 +1,6 @@
-import {injectable} from "tsyringe";
-import {User, UserDocument, IUser} from "../models";
-import {REGION} from "../util/secrets";
+import { injectable } from "tsyringe";
+import { User, UserDocument, IUser } from "../models";
+import { REGION } from "../util/secrets";
 
 @injectable()
 export class UserService {
@@ -23,15 +23,15 @@ export class UserService {
     }
 
     public async findUserByChatId(chatId: string): Promise<UserDocument> {
-        return  User.findOne({chatId});
+        return User.findOne({chatId});
     }
 
     public async findUserById(userId: string): Promise<UserDocument> {
-        return  User.findOne({_id: userId});
+        return User.findOne({_id: userId});
     }
 
     public async updateUserFields(chatId: string, user: IUser) {
-        return  User.updateOne({chatId: chatId}, user)
+        return User.updateOne({chatId: chatId}, user)
     }
 
     public async updateUser(chatId: string, user: IUser) {
@@ -44,7 +44,7 @@ export class UserService {
         return updatedUser.toObject();
     }
 
-    public async resetUserProfile(chatId: string, fields?: any ) {
+    public async resetUserProfile(chatId: string, fields?: any) {
         let resetFields: IUser = {
             chatId,
             region: REGION,
@@ -60,7 +60,7 @@ export class UserService {
             testType: null,
             lastMessageId: null,
         };
-        if(fields){
+        if (fields) {
             resetFields = Object.assign(resetFields, fields);
         }
         await this.updateUser(chatId, resetFields)

@@ -1,15 +1,18 @@
 import { MONGODB_URI } from "../util/secrets";
-import {MongoClient } from "mongodb";
+import { MongoClient } from "mongodb";
 
 class ConnectionPull {
-    private static connection:any;
-    static setConnection(connection:any){
-        ConnectionPull.connection=connection
+    private static connection: any;
+
+    static setConnection(connection: any) {
+        ConnectionPull.connection = connection
     };
-    static async getConnection(){
-        return ConnectionPull.connection?ConnectionPull.connection:await getConnection();
+
+    static async getConnection() {
+        return ConnectionPull.connection ? ConnectionPull.connection : await getConnection();
     }
 }
+
 function getConnection() {
 
     return new Promise((resolve, reject) => {
@@ -26,4 +29,4 @@ function getConnection() {
 
 }
 
-export {getConnection,ConnectionPull};
+export { getConnection, ConnectionPull };

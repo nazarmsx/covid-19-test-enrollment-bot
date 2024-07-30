@@ -1,4 +1,4 @@
-import {injectable} from "tsyringe";
+import { injectable } from "tsyringe";
 import moment from "moment";
 
 export interface FlowStep {

@@ -1,1 +1,1 @@
-export  {checkIsAdmin,checkAuth,checkIsUser,NotAuthorized}  from './Auth'
+export { checkIsAdmin, checkAuth, checkIsUser, NotAuthorized }  from './Auth'

@@ -5,7 +5,7 @@ const options: LoggerOptions = {
         new transports.Console({
             level: process.env.NODE_ENV === "production" ? "error" : "debug"
         }),
-        new transports.File({ filename: "debug.log", level: "debug" })
+        new transports.File({filename: "debug.log", level: "debug"})
     ]
 };
 
